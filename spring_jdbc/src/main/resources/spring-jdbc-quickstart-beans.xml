@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- Annotation based Transaction management -->
+    <tx:annotation-driven proxy-target-class="true"
+                          transaction-manager="transactionManager" />
+
+    <!-- Creating TransactionManager Bean -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:13306/customerdb" />
+        <property name="username" value="root" />
+        <property name="password" value="mysqlroot" />
+    </bean>
+
+    <bean id="consumerDao" class="spring.jdbc.quickstart.dao.ConsumerDao">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="consumerManager" class="spring.jdbc.quickstart.service.ConsumerManager">
+        <property name="consumerDao" ref="consumerDao"/>
+    </bean>
+
+</beans>
